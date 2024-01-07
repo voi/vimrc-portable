@@ -1,0 +1,13 @@
+.git
+.bzr
+.bzrignore
+.eskk
+_etc
+_skk
+pack
+templates
+.netwhist
+.pack_plugins
+.skk-jisyo
+.stall.bookmark
+_local_*.vim
