@@ -988,6 +988,7 @@ function! s:ListUp_GetContext(name, args)
   elseif a:name ==# 'bookmark'
     let filepath = s:ListUp_getBookmarkPath()
     let files = extend((filereadable(filepath) ? readfile(filepath) : []), s:ListUp_history)
+        \ ->sort()->uniq()
     return #{ lines: files, efm: '%f', title: 'Bookmark' }
 
   else
@@ -1009,11 +1010,11 @@ function! s:ListUp_addBookmark(args)
   call writefile(a:args
       \ ->map({ idx, val -> fnamemodify(expand(val), ':p') })
       \ ->filter({ idx, val -> filereadable(val) }),
-      \ s:ListUp_history(), 'a')
+      \ s:ListUp_getBookmarkPath(), 'a')
 endfunction
 
-function! s:ListUp_addHistory()
-  if getbufvar('%', '&buftype') ==# 'nofile'
+function! s:ListUp_recordHistory()
+  if !empty(getbufvar('%', '&buftype'))
     return
   endif
 
@@ -1042,7 +1043,7 @@ command! -nargs=+ -complete=file BookmarkAdd call s:ListUp_addBookmark([<f-args>
 
 augroup plugin_autocmd_list_up
   autocmd!
-  autocmd BufReadPost,BufWritePost * call s:ListUp_addHistory()
+  autocmd BufReadPost,BufWritePost * call s:ListUp_recordHistory()
 augroup END
 
 """" }}}
