@@ -182,13 +182,13 @@ endif
 vnoremap <silent> _ "0p`<
 
 " switch modes.
-nnoremap <silent> <Leader>oe :setl expandtab! expandtab?<CR>
-nnoremap <silent> <Leader>oh :setl hlsearch!  hlsearch?<CR>
-nnoremap <silent> <Leader>or :setl readonly!  modifiable! modifiable?<CR>
-nnoremap <silent> <Leader>ow :setl wrap!      wrap?<CR>
-nnoremap <silent> <Leader>os :setl wrapscan!  wrapscan?<CR>
-nnoremap <silent> <Leader>oi :setl incsearch! incsearch?<CR>
-nnoremap <silent> <Leader>ol :setl relativenumber! relativenumber?<CR>
+nnoremap <silent> <Leader>se :setl expandtab! expandtab?<CR>
+nnoremap <silent> <Leader>sh :setl hlsearch!  hlsearch?<CR>
+nnoremap <silent> <Leader>sr :setl readonly!  modifiable! modifiable?<CR>
+nnoremap <silent> <Leader>sw :setl wrap!      wrap?<CR>
+nnoremap <silent> <Leader>ss :setl wrapscan!  wrapscan?<CR>
+nnoremap <silent> <Leader>si :setl incsearch! incsearch?<CR>
+nnoremap <silent> <Leader>sl :setl relativenumber! relativenumber?<CR>
 
 " buffer
 nnoremap <silent> [b :bprev<CR>
@@ -364,13 +364,30 @@ augroup END
 " *****************************************************************************
 """" 40_colors_highlight.vim  {{{
 function! s:Vimrc_HighlightPlus() abort
+  hi clear CursorLine
+  hi clear SpecialKey
+
+  hi CursorLine term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+
   " ime
   hi CursorIM gui=NONE guifg=#FFFFFF guibg=#8000FF ctermbg=White ctermbg=Red
 
-  if !has('gui_running')
-    hi clear CursorLine
-    hi CursorLine term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+  if &g:background ==# 'dark'
+    hi SpecialKey   guifg=#808080  guibg=NONE    gui=NONE       ctermfg=grey
+    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey cterm=underline
+    hi Comment      guifg=#cccccc  guibg=NONE    gui=italic     ctermfg=grey
+  else
+    hi SpecialKey   guifg=#cccccc  guibg=NONE    gui=NONE       ctermfg=grey
+    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey cterm=underline
+    hi Comment      guifg=#808080  guibg=NONE    gui=italic     ctermfg=darkgrey
   endif
+
+  "
+  hi link TrailingSpace NonText
+
+  "
+  call matchadd('ZenkakuSpace', '　')
+  call matchadd('TrailingSpace', '\s\{2,\}$')
 
   " statusline
   hi StatusLine_Modes      guifg=#030303 guibg=#FFFFFF ctermfg=Black ctermbg=White
@@ -382,27 +399,16 @@ function! s:Vimrc_HighlightPlus() abort
   hi StatusLine_Visual     guifg=#FFFFFF guibg=#F20000 ctermfg=White ctermbg=Red
   hi StatusLine_Select     guifg=#030303 guibg=#F2F200 ctermfg=Black ctermbg=Yellow
 
-  "
-  hi link TrailingSpace NonText
+  if has('gui_running')
+    if &g:background ==# 'dark'
+      hi Normal       guifg=#f0f0f0  guibg=#404042 gui=NONE
+      hi NormalNC     guifg=#808080  guibg=#606060
 
-  if &g:background ==# 'dark'
-    hi clear SpecialKey
-    hi SpecialKey   guifg=#808080  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey cterm=underline
-    hi Normal       guifg=#f0f0f0  guibg=#404042 gui=NONE
-    hi NormalNC     guifg=#808080  guibg=#606060
-    hi Comment      guifg=#cccccc  guibg=NONE    gui=italic     ctermfg=grey
+    else
+      hi Normal       guifg=#030303  guibg=#f0f0f0 gui=NONE
+      hi NormalNC     guifg=#cccccc  guibg=#dddddd
 
-  else
-    hi clear SpecialKey
-    hi SpecialKey   guifg=#cccccc  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey cterm=underline
-    hi Normal       guifg=#030303  guibg=#f0f0f0 gui=NONE
-    hi NormalNC     guifg=#cccccc  guibg=#dddddd
-    hi Comment      guifg=#808080  guibg=NONE    gui=italic     ctermfg=darkgrey
-
-    " based vim-kalisi
-    if has('gui_running')
+      " based vim-kalisi
       hi Constant         guifg=#0000af guibg=NONE    gui=bold
       hi String           guifg=#0060a0 guibg=NONE
       hi Character        guifg=#9054c7 guibg=NONE    gui=bold
@@ -443,7 +449,7 @@ function! s:Vimrc_HighlightPlus() abort
       hi Error            guifg=#d80000 guibg=#ffff00 gui=bold,underline
       hi ErrorMsg         guifg=#d80000 guibg=#ffff00 gui=bold
 
-      " Misc syntax ###############################################################
+      " Misc syntax
       hi Todo             guifg=#ff0000 guibg=#eeee00 gui=bold
 
       hi Directory        guifg=#0060a0 guibg=NONE    gui=NONE
@@ -463,7 +469,7 @@ function! s:Vimrc_HighlightPlus() abort
       hi SpellLocal       guisp=#006600 gui=undercurl
       hi SpellRare        guisp=#a7a755 gui=undercurl
 
-      " User interface ############################################################
+      " User interface
       hi Visual                         guibg=#d0eeff gui=NONE
       hi VisualNOS                      guibg=#d8d8d8 gui=none
 
@@ -501,10 +507,6 @@ function! s:Vimrc_HighlightPlus() abort
       hi PmenuThumb                     guibg=#555555
     endif
   endif
-
-  "
-  call matchadd('ZenkakuSpace', '　')
-  call matchadd('TrailingSpace', '\s\{2,\}$')
 endfunction
 
 augroup vimrc_autocmd_colors_highlight
@@ -651,7 +653,7 @@ endfunction
 
 " *****************************************************************************
 """" 99_gvimrc.vim  {{{
-if has('gui')
+if has('gui_running')
   let $LANG='ja'
   " |¦»▸>￫↲
   let &showbreak="▸ "
@@ -680,17 +682,9 @@ if has('gui')
 
   " ********
   if has('win32')
-    function! GVimrc_set_guifont(font_name)
-      let height=11
-      let name=a:font_name
-      let &guifont=printf('%s:h%d,Consolas:h%d', name, height, height)
-      let &guifontwide=printf('%s:h%d,BIZ_UDゴシック:h%d', name, height, height)
-    endfunction
-
     set rop=type:directx,renmode:5,taamode:1,contrast:2
-
-    " call GVimrc_set_guifont('UD_デジタル_教科書体_N-R')
-    call GVimrc_set_guifont('BIZ_UDゴシック')
+    set guifont=Consolas:h10
+    set guifontwide=BIZ_UDゴシック:h10
   endif
 endif
 
@@ -1357,21 +1351,7 @@ function! s:vcs_get_cmdline(arguments)
   return join(args, ' ')
 endfunction
 
-function! s:vcs_job_out_cb(cwd, msg, lines)
-  if has('iconv') && &termencoding != &encoding
-    let out = iconv(a:msg, &termencoding, &encoding)
-  else
-    let out = a:msg
-  endif
-
-  call extend(a:lines, split(out, '\n')
-      \ ->map({ idx, val -> fnamemodify(a:cwd . val, ':p' ) })
-      \ ->filter({ idx, val -> !isdirectory(val) })
-      \ ->filter({ idx, val -> val !~ '/$'})
-      \ )
-endfunction
-
-function! s:vcs_get_files(repo, arguments, Handler)
+function! s:vcs_get_files(repo, arguments)
   let root = finddir(a:repo, getcwd() . ';')
   let cwd = a:arguments[-1]->fnamemodify(':p')
 
@@ -1386,28 +1366,37 @@ function! s:vcs_get_files(repo, arguments, Handler)
 
   let cwd = cwd->fnamemodify(':p')
   let args = add(a:arguments, root)
-  let lines = []
+  let cmdline = join(args, ' ')
 
-  call job_start(
-      \ s:vcs_get_cmdline(args),
-      \ {
-      \   'out_cb': { ch, msg -> s:vcs_job_out_cb(cwd, msg, lines) },
-      \   'close_cb': { ch -> a:Handler(lines) }
-      \ })
-  echomsg ' [listing...] ' . join(args, ' ')
-endfunction
+  echomsg ' [listing...] ' . cmdline
 
-function! s:vcs_get_list_cb(arguments, errorformat, bang, lines)
-  call Vimrc_ListUp(#{ lines: a:lines, efm: a:errorformat, title: join(a:arguments, ' ') }, a:bang)
+  let cout = s:vcs_command(args)
+
+" if has('iconv') && &termencoding != &encoding
+"   let cout = iconv(cout, &termencoding, &encoding)
+" endif
+
+  return [ cmdline, cout->split('\n')
+      \ ->map({ idx, val -> fnamemodify(cwd . val, ':p' ) })
+      \ ->filter({ idx, val -> !isdirectory(val) })
+      \ ->filter({ idx, val -> val !~ '/$'}) ]
 endfunction
 
 function! s:vcs_get_list(repo, arguments, errorformat, bang)
-  call s:vcs_get_files(a:repo, a:arguments,
-      \ function('s:vcs_get_list_cb', [ a:arguments, a:errorformat, a:bang ]))
+  let [ cmdline, files ] = s:vcs_get_files(a:repo, a:arguments)
+  let what = #{
+      \ lines: files,
+      \ efm: a:errorformat,
+      \ title: cmdline
+      \ }
+
+  call Vimrc_ListUp(what, a:bang)
 endfunction
 
 function! s:vcs_get_popup(repo, arguments)
-  call s:vcs_get_files(a:repo, a:arguments, function('Vimrc_Popup'))
+  let [ _, files ] = s:vcs_get_files(a:repo, a:arguments)
+
+  call Vimrc_Popup(files)
 endfunction
 
 function! s:vcs_get_output(arguments, extension)
@@ -1532,17 +1521,17 @@ function! s:WordHighlight_Delete() abort
 endfunction
 
 function! WordHighlight_Sync(key) abort
+  " initialize
+  " entries : { key(count): syntax-match-ID }
+  if !has_key(w:, 'word_highlight_entries')
+    let w:word_highlight_entries = {}
+
+    for [key, val] in copy(s:WordHighlight.colors)->map({ idx, val -> [idx + 1, val] })
+      execute printf('hi! WordHighlight%d %s', key, val)
+    endfor
+  endif
+
   if a:key == 0 " add/remove highlight of all entries
-    " initialize
-    " entries : { key(count): syntax-match-ID }
-    if !has_key(w:, 'word_highlight_entries')
-      let w:word_highlight_entries = {}
-
-      for [key, val] in copy(s:WordHighlight.colors)->map({ idx, val -> [idx + 1, val] })
-        execute printf('hi! WordHighlight%d %s', key, val)
-      endfor
-    endif
-
     if empty(s:WordHighlight.entries)
       for [key, id] in items(w:word_highlight_entries)
         call matchdelete(id)

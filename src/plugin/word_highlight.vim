@@ -50,17 +50,17 @@ function! s:WordHighlight_Delete() abort
 endfunction
 
 function! WordHighlight_Sync(key) abort
+  " initialize
+  " entries : { key(count): syntax-match-ID }
+  if !has_key(w:, 'word_highlight_entries')
+    let w:word_highlight_entries = {}
+
+    for [key, val] in copy(s:WordHighlight.colors)->map({ idx, val -> [idx + 1, val] })
+      execute printf('hi! WordHighlight%d %s', key, val)
+    endfor
+  endif
+
   if a:key == 0 " add/remove highlight of all entries
-    " initialize
-    " entries : { key(count): syntax-match-ID }
-    if !has_key(w:, 'word_highlight_entries')
-      let w:word_highlight_entries = {}
-
-      for [key, val] in copy(s:WordHighlight.colors)->map({ idx, val -> [idx + 1, val] })
-        execute printf('hi! WordHighlight%d %s', key, val)
-      endfor
-    endif
-
     if empty(s:WordHighlight.entries)
       for [key, id] in items(w:word_highlight_entries)
         call matchdelete(id)
