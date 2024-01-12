@@ -38,13 +38,13 @@ endif
 vnoremap <silent> _ "0p`<
 
 " switch modes.
-nnoremap <silent> <Leader>oe :setl expandtab! expandtab?<CR>
-nnoremap <silent> <Leader>oh :setl hlsearch!  hlsearch?<CR>
-nnoremap <silent> <Leader>or :setl readonly!  modifiable! modifiable?<CR>
-nnoremap <silent> <Leader>ow :setl wrap!      wrap?<CR>
-nnoremap <silent> <Leader>os :setl wrapscan!  wrapscan?<CR>
-nnoremap <silent> <Leader>oi :setl incsearch! incsearch?<CR>
-nnoremap <silent> <Leader>ol :setl relativenumber! relativenumber?<CR>
+nnoremap <silent> <Leader>se :setl expandtab! expandtab?<CR>
+nnoremap <silent> <Leader>sh :setl hlsearch!  hlsearch?<CR>
+nnoremap <silent> <Leader>sr :setl readonly!  modifiable! modifiable?<CR>
+nnoremap <silent> <Leader>sw :setl wrap!      wrap?<CR>
+nnoremap <silent> <Leader>ss :setl wrapscan!  wrapscan?<CR>
+nnoremap <silent> <Leader>si :setl incsearch! incsearch?<CR>
+nnoremap <silent> <Leader>sl :setl relativenumber! relativenumber?<CR>
 
 " buffer
 nnoremap <silent> [b :bprev<CR>
