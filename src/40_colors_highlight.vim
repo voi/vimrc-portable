@@ -1,11 +1,28 @@
 function! s:Vimrc_HighlightPlus() abort
+  hi clear CursorLine
+  hi clear SpecialKey
+
+  hi CursorLine term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+
   " ime
   hi CursorIM gui=NONE guifg=#FFFFFF guibg=#8000FF ctermbg=White ctermbg=Red
 
-  if !has('gui_running')
-    hi clear CursorLine
-    hi CursorLine term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+  if &g:background ==# 'dark'
+    hi SpecialKey   guifg=#808080  guibg=NONE    gui=NONE       ctermfg=grey
+    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey cterm=underline
+    hi Comment      guifg=#cccccc  guibg=NONE    gui=italic     ctermfg=grey
+  else
+    hi SpecialKey   guifg=#cccccc  guibg=NONE    gui=NONE       ctermfg=grey
+    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey cterm=underline
+    hi Comment      guifg=#808080  guibg=NONE    gui=italic     ctermfg=darkgrey
   endif
+
+  "
+  hi link TrailingSpace NonText
+
+  "
+  call matchadd('ZenkakuSpace', '　')
+  call matchadd('TrailingSpace', '\s\{2,\}$')
 
   " statusline
   hi StatusLine_Modes      guifg=#030303 guibg=#FFFFFF ctermfg=Black ctermbg=White
@@ -17,27 +34,16 @@ function! s:Vimrc_HighlightPlus() abort
   hi StatusLine_Visual     guifg=#FFFFFF guibg=#F20000 ctermfg=White ctermbg=Red
   hi StatusLine_Select     guifg=#030303 guibg=#F2F200 ctermfg=Black ctermbg=Yellow
 
-  "
-  hi link TrailingSpace NonText
+  if has('gui_running')
+    if &g:background ==# 'dark'
+      hi Normal       guifg=#f0f0f0  guibg=#404042 gui=NONE
+      hi NormalNC     guifg=#808080  guibg=#606060
 
-  if &g:background ==# 'dark'
-    hi clear SpecialKey
-    hi SpecialKey   guifg=#808080  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey cterm=underline
-    hi Normal       guifg=#f0f0f0  guibg=#404042 gui=NONE
-    hi NormalNC     guifg=#808080  guibg=#606060
-    hi Comment      guifg=#cccccc  guibg=NONE    gui=italic     ctermfg=grey
+    else
+      hi Normal       guifg=#030303  guibg=#f0f0f0 gui=NONE
+      hi NormalNC     guifg=#cccccc  guibg=#dddddd
 
-  else
-    hi clear SpecialKey
-    hi SpecialKey   guifg=#cccccc  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey cterm=underline
-    hi Normal       guifg=#030303  guibg=#f0f0f0 gui=NONE
-    hi NormalNC     guifg=#cccccc  guibg=#dddddd
-    hi Comment      guifg=#808080  guibg=NONE    gui=italic     ctermfg=darkgrey
-
-    " based vim-kalisi
-    if has('gui_running')
+      " based vim-kalisi
       hi Constant         guifg=#0000af guibg=NONE    gui=bold
       hi String           guifg=#0060a0 guibg=NONE
       hi Character        guifg=#9054c7 guibg=NONE    gui=bold
@@ -78,7 +84,7 @@ function! s:Vimrc_HighlightPlus() abort
       hi Error            guifg=#d80000 guibg=#ffff00 gui=bold,underline
       hi ErrorMsg         guifg=#d80000 guibg=#ffff00 gui=bold
 
-      " Misc syntax ###############################################################
+      " Misc syntax
       hi Todo             guifg=#ff0000 guibg=#eeee00 gui=bold
 
       hi Directory        guifg=#0060a0 guibg=NONE    gui=NONE
@@ -98,7 +104,7 @@ function! s:Vimrc_HighlightPlus() abort
       hi SpellLocal       guisp=#006600 gui=undercurl
       hi SpellRare        guisp=#a7a755 gui=undercurl
 
-      " User interface ############################################################
+      " User interface
       hi Visual                         guibg=#d0eeff gui=NONE
       hi VisualNOS                      guibg=#d8d8d8 gui=none
 
@@ -136,10 +142,6 @@ function! s:Vimrc_HighlightPlus() abort
       hi PmenuThumb                     guibg=#555555
     endif
   endif
-
-  "
-  call matchadd('ZenkakuSpace', '　')
-  call matchadd('TrailingSpace', '\s\{2,\}$')
 endfunction
 
 augroup vimrc_autocmd_colors_highlight
