@@ -8,21 +8,7 @@ function! s:vcs_get_cmdline(arguments)
   return join(args, ' ')
 endfunction
 
-function! s:vcs_job_out_cb(cwd, msg, lines)
-  if has('iconv') && &termencoding != &encoding
-    let out = iconv(a:msg, &termencoding, &encoding)
-  else
-    let out = a:msg
-  endif
-
-  call extend(a:lines, split(out, '\n')
-      \ ->map({ idx, val -> fnamemodify(a:cwd . val, ':p' ) })
-      \ ->filter({ idx, val -> !isdirectory(val) })
-      \ ->filter({ idx, val -> val !~ '/$'})
-      \ )
-endfunction
-
-function! s:vcs_get_files(repo, arguments, Handler)
+function! s:vcs_get_files(repo, arguments)
   let root = finddir(a:repo, getcwd() . ';')
   let cwd = a:arguments[-1]->fnamemodify(':p')
 
@@ -37,28 +23,37 @@ function! s:vcs_get_files(repo, arguments, Handler)
 
   let cwd = cwd->fnamemodify(':p')
   let args = add(a:arguments, root)
-  let lines = []
+  let cmdline = join(args, ' ')
 
-  call job_start(
-      \ s:vcs_get_cmdline(args),
-      \ {
-      \   'out_cb': { ch, msg -> s:vcs_job_out_cb(cwd, msg, lines) },
-      \   'close_cb': { ch -> a:Handler(lines) }
-      \ })
-  echomsg ' [listing...] ' . join(args, ' ')
-endfunction
+  echomsg ' [listing...] ' . cmdline
 
-function! s:vcs_get_list_cb(arguments, errorformat, bang, lines)
-  call Vimrc_ListUp(#{ lines: a:lines, efm: a:errorformat, title: join(a:arguments, ' ') }, a:bang)
+  let cout = s:vcs_command(args)
+
+" if has('iconv') && &termencoding != &encoding
+"   let cout = iconv(cout, &termencoding, &encoding)
+" endif
+
+  return [ cmdline, cout->split('\n')
+      \ ->map({ idx, val -> fnamemodify(cwd . val, ':p' ) })
+      \ ->filter({ idx, val -> !isdirectory(val) })
+      \ ->filter({ idx, val -> val !~ '/$'}) ]
 endfunction
 
 function! s:vcs_get_list(repo, arguments, errorformat, bang)
-  call s:vcs_get_files(a:repo, a:arguments,
-      \ function('s:vcs_get_list_cb', [ a:arguments, a:errorformat, a:bang ]))
+  let [ cmdline, files ] = s:vcs_get_files(a:repo, a:arguments)
+  let what = #{
+      \ lines: files,
+      \ efm: a:errorformat,
+      \ title: cmdline
+      \ }
+
+  call Vimrc_ListUp(what, a:bang)
 endfunction
 
 function! s:vcs_get_popup(repo, arguments)
-  call s:vcs_get_files(a:repo, a:arguments, function('Vimrc_Popup'))
+  let [ _, files ] = s:vcs_get_files(a:repo, a:arguments)
+
+  call Vimrc_Popup(files)
 endfunction
 
 function! s:vcs_get_output(arguments, extension)
