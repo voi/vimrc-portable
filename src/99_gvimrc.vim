@@ -1,4 +1,4 @@
-if has('gui')
+if has('gui_running')
   let $LANG='ja'
   " |¦»▸>￫↲
   let &showbreak="▸ "
@@ -27,17 +27,9 @@ if has('gui')
 
   " ********
   if has('win32')
-    function! GVimrc_set_guifont(font_name)
-      let height=11
-      let name=a:font_name
-      let &guifont=printf('%s:h%d,Consolas:h%d', name, height, height)
-      let &guifontwide=printf('%s:h%d,BIZ_UDゴシック:h%d', name, height, height)
-    endfunction
-
     set rop=type:directx,renmode:5,taamode:1,contrast:2
-
-    " call GVimrc_set_guifont('UD_デジタル_教科書体_N-R')
-    call GVimrc_set_guifont('BIZ_UDゴシック')
+    set guifont=Consolas:h10
+    set guifontwide=BIZ_UDゴシック:h10
   endif
 endif
 
