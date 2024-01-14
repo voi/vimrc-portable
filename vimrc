@@ -367,18 +367,19 @@ function! s:Vimrc_HighlightPlus() abort
   hi clear CursorLine
   hi clear SpecialKey
 
-  hi CursorLine term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+  hi CursorLine   term=NONE     cterm=NONE    ctermfg=NONE   ctermbg=NONE
+  hi CursorLineNr term=reverse  cterm=reverse
 
   " ime
   hi CursorIM gui=NONE guifg=#FFFFFF guibg=#8000FF ctermbg=White ctermbg=Red
 
   if &g:background ==# 'dark'
     hi SpecialKey   guifg=#808080  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey cterm=underline
+    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey  cterm=underline
     hi Comment      guifg=#cccccc  guibg=NONE    gui=italic     ctermfg=grey
   else
     hi SpecialKey   guifg=#cccccc  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey cterm=underline
+    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey      cterm=underline
     hi Comment      guifg=#808080  guibg=NONE    gui=italic     ctermfg=darkgrey
   endif
 
@@ -720,7 +721,7 @@ function! s:Align_parse(arguments) abort
   let l:ctx = {
       \ 'pattern': '',
       \ 'global': '',
-      \ 'filler': function('<SID>align_calc_padding_space'),
+      \ 'filler': function('<SID>Align_calc_padding_space'),
       \ 'sub': '\n&',
       \ 'delim': '\n'
       \ }
@@ -729,7 +730,7 @@ function! s:Align_parse(arguments) abort
 
   for l:opt in a:arguments
     if     l:opt ==# '-g' | let l:ctx.global = 'g'
-    elseif l:opt ==# '-t' | let l:ctx.filler = function('<SID>align_calc_padding_tabs')
+    elseif l:opt ==# '-t' | let l:ctx.filler = function('<SID>Align_calc_padding_tabs')
     elseif l:opt ==# '-a' | let l:ctx.sub = '&\n' | let l:ctx.delim = '\n\s*'
     elseif l:opt ==# '-r' | let l:use_regexp = 1
     elseif l:opt ==# '-c' | let l:case = '\C'
