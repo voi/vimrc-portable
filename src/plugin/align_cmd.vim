@@ -26,7 +26,7 @@ function! s:Align_parse(arguments) abort
   let l:ctx = {
       \ 'pattern': '',
       \ 'global': '',
-      \ 'filler': function('<SID>align_calc_padding_space'),
+      \ 'filler': function('<SID>Align_calc_padding_space'),
       \ 'sub': '\n&',
       \ 'delim': '\n'
       \ }
@@ -35,7 +35,7 @@ function! s:Align_parse(arguments) abort
 
   for l:opt in a:arguments
     if     l:opt ==# '-g' | let l:ctx.global = 'g'
-    elseif l:opt ==# '-t' | let l:ctx.filler = function('<SID>align_calc_padding_tabs')
+    elseif l:opt ==# '-t' | let l:ctx.filler = function('<SID>Align_calc_padding_tabs')
     elseif l:opt ==# '-a' | let l:ctx.sub = '&\n' | let l:ctx.delim = '\n\s*'
     elseif l:opt ==# '-r' | let l:use_regexp = 1
     elseif l:opt ==# '-c' | let l:case = '\C'
