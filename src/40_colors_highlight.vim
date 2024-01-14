@@ -2,18 +2,19 @@ function! s:Vimrc_HighlightPlus() abort
   hi clear CursorLine
   hi clear SpecialKey
 
-  hi CursorLine term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE
+  hi CursorLine   term=NONE     cterm=NONE    ctermfg=NONE   ctermbg=NONE
+  hi CursorLineNr term=reverse  cterm=reverse
 
   " ime
   hi CursorIM gui=NONE guifg=#FFFFFF guibg=#8000FF ctermbg=White ctermbg=Red
 
   if &g:background ==# 'dark'
     hi SpecialKey   guifg=#808080  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey cterm=underline
+    hi ZenkakuSpace guifg=darkgrey               gui=underline  ctermfg=darkgrey  cterm=underline
     hi Comment      guifg=#cccccc  guibg=NONE    gui=italic     ctermfg=grey
   else
     hi SpecialKey   guifg=#cccccc  guibg=NONE    gui=NONE       ctermfg=grey
-    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey cterm=underline
+    hi ZenkakuSpace guifg=grey                   gui=underline  ctermfg=grey      cterm=underline
     hi Comment      guifg=#808080  guibg=NONE    gui=italic     ctermfg=darkgrey
   endif
 
