@@ -221,11 +221,11 @@ inoremap <expr> <C-n> pumvisible() ? "\<Down>" : "\<C-n>"
 inoremap <expr> <C-p> pumvisible() ? "\<Up>" : "\<C-p>"
 
 " abbr datetime
-inoreabbr -d <C-r>=strftime('%Y-%m-%d')<CR>
-inoreabbr /d <C-r>=strftime('%Y/%m/%d')<CR>
-inoreabbr -t <C-r>=strftime('%H:%M')<CR>
-inoreabbr -f <C-r>=strftime('%Y-%m-%dT%H:%M')<CR>
-inoreabbr /f <C-r>=strftime('%Y/%m/%dT%H:%M')<CR>
+inoreabbr -date- <C-r>=strftime('%Y-%m-%d')<CR>
+inoreabbr /date/ <C-r>=strftime('%Y/%m/%d')<CR>
+inoreabbr -time- <C-r>=strftime('%H:%M')<CR>
+inoreabbr -full- <C-r>=strftime('%Y-%m-%dT%H:%M')<CR>
+inoreabbr /full/ <C-r>=strftime('%Y/%m/%dT%H:%M')<CR>
 
 """" }}}
 
@@ -348,7 +348,7 @@ augroup vimrc_autocmd_user_syntax
       " \ | syn match Bold /[{}]/
 
   autocmd FileType log 
-      \ | syn match LogDumpNonZero /\<\%([13-9A-F]0\|\x[1-9A-F]\)\>/
+      \   syn match LogDumpNonZero /\<\%([13-9A-F]0\|\x[1-9A-F]\)\>/
       \ | syn match LogDumpZero    /\<00\>/
       \ | syn match LogDumpSpace   /\<20\>/
       \ | syn match LogErrWord     /\cERR\%[OR]/
@@ -1066,7 +1066,7 @@ vnoremap <silent> <LocalLeader>x :GfmTodo<CR>
 augroup plugin_autocmd_markdown
   autocmd!
   autocmd FileType markdown setl
-      \ tabstop=2 softtabstop=2 shiftwidth=2 wrap
+      \ tabstop=4 softtabstop=4 shiftwidth=4 nowrap noexpandtab
       \ nosmartindent indentkeys=!^F,o,O indentexpr=Vimrc_Markdown_IndentExpr()
       \ commentstring=<!--\ %s\ -->
       \ | inoreabbr <buffer> -[ - [ ]
