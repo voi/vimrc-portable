@@ -27,7 +27,7 @@ augroup vimrc_autocmd_user_syntax
       " \ | syn match Bold /[{}]/
 
   autocmd FileType log 
-      \ | syn match LogDumpNonZero /\<\%([13-9A-F]0\|\x[1-9A-F]\)\>/
+      \   syn match LogDumpNonZero /\<\%([13-9A-F]0\|\x[1-9A-F]\)\>/
       \ | syn match LogDumpZero    /\<00\>/
       \ | syn match LogDumpSpace   /\<20\>/
       \ | syn match LogErrWord     /\cERR\%[OR]/
