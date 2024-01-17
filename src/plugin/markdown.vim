@@ -19,7 +19,7 @@ vnoremap <silent> <LocalLeader>x :GfmTodo<CR>
 augroup plugin_autocmd_markdown
   autocmd!
   autocmd FileType markdown setl
-      \ tabstop=2 softtabstop=2 shiftwidth=2 wrap
+      \ tabstop=4 softtabstop=4 shiftwidth=4 nowrap noexpandtab
       \ nosmartindent indentkeys=!^F,o,O indentexpr=Vimrc_Markdown_IndentExpr()
       \ commentstring=<!--\ %s\ -->
       \ | inoreabbr <buffer> -[ - [ ]
