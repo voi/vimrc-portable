@@ -77,9 +77,9 @@ inoremap <expr> <C-n> pumvisible() ? "\<Down>" : "\<C-n>"
 inoremap <expr> <C-p> pumvisible() ? "\<Up>" : "\<C-p>"
 
 " abbr datetime
-inoreabbr -d <C-r>=strftime('%Y-%m-%d')<CR>
-inoreabbr /d <C-r>=strftime('%Y/%m/%d')<CR>
-inoreabbr -t <C-r>=strftime('%H:%M')<CR>
-inoreabbr -f <C-r>=strftime('%Y-%m-%dT%H:%M')<CR>
-inoreabbr /f <C-r>=strftime('%Y/%m/%dT%H:%M')<CR>
+inoreabbr -date- <C-r>=strftime('%Y-%m-%d')<CR>
+inoreabbr /date/ <C-r>=strftime('%Y/%m/%d')<CR>
+inoreabbr -time- <C-r>=strftime('%H:%M')<CR>
+inoreabbr -full- <C-r>=strftime('%Y-%m-%dT%H:%M')<CR>
+inoreabbr /full/ <C-r>=strftime('%Y/%m/%dT%H:%M')<CR>
 
